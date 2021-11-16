@@ -1,27 +1,26 @@
 
-const {mysql} = require('../model/database');
+const {Events} = require('../model/database');
 
 module.exports ={
-    newEvents:(req,res,next)=>{
+    newEvents:async (req,res,next)=>{
         const {ETitle,EType,EDate} = req.body;
-        const sql = `INSERT INTO events (Etitle,Etype,Edate) VALUES('${ETitle}','${EType}','${EDate}') `;
-        mysql.query(sql,(err,result)=>{
-                if(result.affectedRows == 1){
-                    req.eventData = {success:true};
-                    next();
-                }
-        });
-            
+        try{
+            const newEvents = await Events.create({ETitle,EType,EDate});
+            req.eventData = {success:true};
+            next();
+        }catch(error){
+            req.eventData = {success:false}
+            next(error);
+        }   
     },
     sendEventSuccess:(req,res)=>{
         if(req.eventData){
             res.send(req.eventData);
         }
     },
-    fetchAllevents:(req,res) =>{
-        const sql = `SELECT * FROM events order by id DESC `;
-        mysql.query(sql,(err,results)=>{
-            res.send(results);
-        })
+    fetchAllevents:async (req,res) =>{
+        const events = await Events.find({});
+        res.json(events,undefined,2);
+       
     }
 }

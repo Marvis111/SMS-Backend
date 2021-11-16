@@ -54,7 +54,7 @@ const loginController ={
                                     case 'teachers':
                                         req.signedUser = {success:true,newUser:{
                                             Email:userDetails.EAddress,Name:userDetails.FName +' '+userDetails.LName
-                                            ,token,Category,id:userDetails._id
+                                            ,token,Category,id:userDetails._id,expiresIn:3600
                                         } }
                                         break;
                                 
