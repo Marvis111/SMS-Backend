@@ -12,7 +12,7 @@ const studentController = {
         }catch(err){
             res.message = {success:false,message:err.message}
         }
-        res.json(res.message);
+        res.json(res.message,undefined,2);
     }
 }
 module.exports = studentController
